@@ -1,0 +1,21 @@
+# CareerBridge Database Configuration
+# Copy this file to db.properties and fill in your values
+# NEVER commit db.properties to version control
+
+db.url=jdbc:mysql://localhost:3306/careerbridge?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata
+db.username=root
+db.password=YOUR_PASSWORD_HERE
+db.driver=com.mysql.cj.jdbc.Driver
+
+# Connection pool settings
+db.pool.maxSize=10
+db.pool.minIdle=2
+
+# File upload settings
+upload.directory=C:/careerbridge/uploads
+upload.maxSizeMB=10
+upload.allowedTypes=application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document
+
+# Application settings
+app.baseUrl=http://localhost:8080/careerbridge
+app.defaultLocale=en

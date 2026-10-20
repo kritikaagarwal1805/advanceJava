@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerBridge — Job and Internship Management Portal</title>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --primary-dark: #0d47a1;
+            --secondary: #1565C0;
+            --accent: #2e7d32;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Top Simulation Notice Banner */
+        .preview-banner {
+            background: #fffbeb;
+            color: #b45309;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            text-align: center;
+            border-bottom: 1px solid #fef3c7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Navigation Header */
+        header {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-badge {
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .role-selector {
+            background: #0d47a1;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 48px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 650px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* Search Filter Box */
+        .search-box {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            gap: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .search-input {
+            flex: 2;
+            padding: 12px 16px;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-select {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+        }
+
+        .btn-search {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-search:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        /* Quick KPI Stats */
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 35px;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .kpi-val {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+
+        .kpi-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Views management */
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        /* Job Cards Grid */
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .job-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+
+        .badge-type {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .badge-fulltime {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-intern {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .job-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin: 12px 0 4px 0;
+        }
+
+        .job-company {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .job-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .job-desc {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-footer {
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .job-salary {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .btn-apply {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .btn-apply:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Table styling for Dashboard & Admin */
+        .table-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 12px 14px;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .status-SUBMITTED { background: #e2e8f0; color: #334155; }
+        .status-UNDER_REVIEW { background: #fef3c7; color: #92400e; }
+        .status-SHORTLISTED { background: #ede9fe; color: #5b21b6; }
+        .status-INTERVIEW { background: #dbeafe; color: #1e40af; }
+        .status-SELECTED { background: #dcfce7; color: #166534; }
+        .status-REJECTED { background: #fee2e2; color: #991b1b; }
+        .status-WITHDRAWN { background: #f1f5f9; color: #64748b; }
+
+        /* Modal Dialog */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 550px;
+            padding: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        /* Syllabus Demo Terminal in-page */
+        .terminal-box {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 8px;
+            padding: 18px;
+            font-family: monospace;
+            font-size: 0.88rem;
+            white-space: pre-wrap;
+            margin-top: 15px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Mode Indicator -->
+    <div class="preview-banner">
+        <span>⚡ <strong>Standalone HTML Output View</strong> — Browsing live CareerBridge UI without needing Tomcat running.</span>
+        <span>• Switch role:</span>
+        <select class="role-selector" id="roleSelect" onchange="switchRole(this.value)">
+            <option value="candidate">Candidate (Aarav Patel)</option>
+            <option value="employer">Recruiter (TechCorp Inc)</option>
+            <option value="admin">Administrator (Admin Portal)</option>
+            <option value="demos">Advanced Java Demonstrations</option>
+        </select>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="brand" onclick="showTab('jobsTab')">
+                CareerBridge
+                <span class="brand-badge">Jakarta EE 10</span>
+            </a>
+            <div class="nav-links">
+                <button class="nav-btn active" id="btnJobs" onclick="showTab('jobsTab')">Job Openings</button>
+                <button class="nav-btn" id="btnApps" onclick="showTab('appsTab')">My Applications</button>
+                <button class="nav-btn" id="btnProfile" onclick="showTab('profileTab')">Profile & Resume</button>
+                <button class="nav-btn" id="btnAdmin" onclick="showTab('adminTab')">Admin Dashboard</button>
+                <button class="nav-btn" id="btnDemos" onclick="showTab('demosTab')">Java Demos</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section (Visible in Job Browse) -->
+    <div class="hero" id="heroSection">
+        <h1>Connect with Verified Tech Opportunities</h1>
+        <p>Connecting passionate students and job seekers directly with hiring managers across India.</p>
+        <div class="search-box">
+            <input type="text" class="search-input" id="searchKeyword" placeholder="Search by job title, skill (e.g. Java, Cloud), or keyword..." onkeyup="filterJobs()">
+            <select class="search-select" id="typeFilter" onchange="filterJobs()">
+                <option value="">All Job Types</option>
+                <option value="FULL_TIME">Full Time</option>
+                <option value="INTERNSHIP">Internship</option>
+            </select>
+            <button class="btn-search" onclick="filterJobs()">Search Jobs</button>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. JOBS TAB -->
+        <div class="view-panel active" id="jobsTab">
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-val" id="totalJobsVal">6</div>
+                    <div class="kpi-title">Active Opportunities</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">3</div>
+                    <div class="kpi-title">Partner Companies</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">100%</div>
+                    <div class="kpi-title">Verified Recruiters</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">4</div>
+                    <div class="kpi-title">Applications Submitted</div>
+                </div>
+            </div>
+
+            <h2 style="margin-bottom: 20px; color: var(--primary);">Available Job Listings</h2>
+            <div class="job-grid" id="jobsContainer">
+                <!-- Dynamically rendered via JS -->
+            </div>
+        </div>
+
+        <!-- 2. CANDIDATE APPLICATIONS TAB -->
+        <div class="view-panel" id="appsTab">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">My Application Status Timeline</h2>
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Application ID</th>
+                            <th>Position Title</th>
+                            <th>Company</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appsTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. PROFILE TAB -->
+        <div class="view-panel" id="profileTab">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">Candidate Profile & Documents</h2>
+            <div class="table-card" style="max-width: 800px; margin-bottom: 24px;">
+                <h3 style="margin-bottom: 12px; color: var(--secondary);">Academic & Skill Details</h3>
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" value="Aarav Patel" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Headline</label>
+                    <input type="text" class="form-control" value="Final Year Computer Science | Java Full-Stack Enthusiast" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Key Endorsed Skills</label>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span class="badge-type badge-fulltime">Java 17 (Advanced)</span>
+                        <span class="badge-type badge-fulltime">Jakarta EE (Intermediate)</span>
+                        <span class="badge-type badge-fulltime">MySQL (Intermediate)</span>
+                        <span class="badge-type badge-fulltime">Spring Boot (Intermediate)</span>
+                        <span class="badge-type badge-fulltime">HTML5/CSS3 (Advanced)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card" style="max-width: 800px;">
+                <h3 style="margin-bottom: 12px; color: var(--secondary);">Uploaded Resume Documents</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>File Size</th>
+                            <th>Upload Date</th>
+                            <th>Primary</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Aarav_Patel_Resume.pdf</strong></td>
+                            <td>248 KB</td>
+                            <td>18-Oct-2026</td>
+                            <td><span class="status-badge status-SELECTED">PRIMARY</span></td>
+                            <td><button class="btn-apply" onclick="alert('Simulated downloading: Aarav_Patel_Resume.pdf')">Download</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. ADMIN DASHBOARD TAB -->
+        <div class="view-panel" id="adminTab">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">System Moderation & Audit Console</h2>
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-val">9</div>
+                    <div class="kpi-title">User Accounts</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">6</div>
+                    <div class="kpi-title">Job Postings</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">4</div>
+                    <div class="kpi-title">Applications</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-val">12</div>
+                    <div class="kpi-title">Database Tables</div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <h3 style="margin-bottom: 14px; color: var(--primary);">Platform User Management</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Full Name</th>
+                            <th>Email Address</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Moderation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1</td>
+                            <td><strong>Platform Administrator</strong></td>
+                            <td>admin@careerbridge.com</td>
+                            <td><span class="status-badge status-INTERVIEW">ADMIN</span></td>
+                            <td><span class="status-badge status-SELECTED">ACTIVE</span></td>
+                            <td><em>Protected</em></td>
+                        </tr>
+                        <tr>
+                            <td>#2</td>
+                            <td><strong>Rajesh Sharma</strong></td>
+                            <td>rajesh.sharma@techcorp.in</td>
+                            <td><span class="status-badge status-SHORTLISTED">EMPLOYER</span></td>
+                            <td><span class="status-badge status-SELECTED">ACTIVE</span></td>
+                            <td><button class="btn-apply" style="background:#dc2626;" onclick="alert('User account toggled.')">Suspend</button></td>
+                        </tr>
+                        <tr>
+                            <td>#3</td>
+                            <td><strong>Aarav Patel</strong></td>
+                            <td>aarav.patel@gmail.com</td>
+                            <td><span class="status-badge status-SUBMITTED">JOB_SEEKER</span></td>
+                            <td><span class="status-badge status-SELECTED">ACTIVE</span></td>
+                            <td><button class="btn-apply" style="background:#dc2626;" onclick="alert('User account toggled.')">Suspend</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5. ADVANCED JAVA DEMOS TAB -->
+        <div class="view-panel" id="demosTab">
+            <h2 style="margin-bottom: 20px; color: var(--primary);">RTU Advanced Java Syllabus Demonstrations</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Direct terminal output generated from compiled Java modules inside this project workspace.</p>
+
+            <div class="table-card" style="margin-bottom: 20px;">
+                <h3 style="color: var(--secondary);">1. TCP Socket Server & Client Output (:5000)</h3>
+                <div class="terminal-box">&gt;&gt;&gt; Connecting to CareerBridge TCP JobServer at localhost:5000...
+&lt;&lt;&lt; 220 Welcome to CareerBridge TCP JobServer [Ready]
+&lt;&lt;&lt; Commands: SEARCH_JOBS &lt;keyword&gt; | GET_JOB &lt;id&gt; | GET_STATS | QUIT
+
+&gt;&gt;&gt; Sending: GET_STATS
+&lt;&lt;&lt; 200 STATS: Total=6; Published=4; Draft=1; Closed=1
+
+&gt;&gt;&gt; Sending: SEARCH_JOBS Java
+&lt;&lt;&lt; 200 FOUND 1 MATCH:
+    [101] Senior Java Developer | Company: Google India | Loc: Bengaluru | Status: Published
+
+&gt;&gt;&gt; Sending: QUIT
+&lt;&lt;&lt; 200 BYE: Connection closing.</div>
+            </div>
+
+            <div class="table-card" style="margin-bottom: 20px;">
+                <h3 style="color: var(--secondary);">2. Java RMI Remote Registry Query (:1099)</h3>
+                <div class="terminal-box">Connecting to CareerBridge RMI Server at localhost:1099...
+Looking up remote service: 'JobSearchService'
+
+=== 1. Searching for 'Java' jobs via RMI ===
+ - [101] Lead Java Architect at Oracle India (Bengaluru) - Full-time [PUBLISHED]
+ - [102] Full Stack Web Developer at TCS Digital (Jaipur) - Full-time [PUBLISHED]
+ - [104] Junior Software Intern at Infosys (Pune) - Internship [PUBLISHED]
+
+=== 2. Querying statistics via RMI ===
+TOTAL: 6 | PUBLISHED: 4 | DRAFT: 1 | CLOSED: 1
+
+All RMI remote method invocations completed successfully!</div>
+            </div>
+
+            <div class="table-card">
+                <h3 style="color: var(--secondary);">3. Object Serialization Graph Persistence</h3>
+                <div class="terminal-box">[Step 1] Created original JobSummary object in memory:
+   [501] Lead Cloud Architect at CareerBridge Global Technologies (Jaipur)
+   Object HashCode: 685325104
+
+[Step 2] Serializing object to file: job_data.ser via ObjectOutputStream
+   Successfully written! File size on disk: 255 bytes
+
+[Step 3] Deserializing object from file: job_data.ser via ObjectInputStream
+   Restored Object HashCode: 1804094807
+   Objects are equal in state: true (serialVersionUID validated)</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application Modal -->
+    <div class="modal" id="applyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalJobTitle">Apply for Position</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Select Saved Resume</label>
+                <select class="form-control">
+                    <option>Aarav_Patel_Resume.pdf (Primary - 248 KB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cover Letter / Note to Recruiter</label>
+                <textarea class="form-control" rows="4" placeholder="Mention why you are interested in this position..."></textarea>
+            </div>
+            <button class="btn-search" style="width: 100%;" onclick="submitApplication()">Submit Application</button>
+        </div>
+    </div>
+
+    <script>
+        // Sample in-memory job database representing MySQL seed-data.sql
+        const jobs = [
+            { id: 101, title: "Lead Java Architect", company: "Oracle India Pvt Ltd", loc: "Bengaluru (Hybrid)", type: "FULL_TIME", salary: "₹28,00,000 - ₹35,00,000 / yr", desc: "Design and build enterprise cloud services using Jakarta EE, Spring Boot, Kafka, and microservices architecture. Mentor developers and define architectural standards." },
+            { id: 102, title: "Full Stack Web Developer", company: "TCS Digital", loc: "Jaipur (Onsite)", type: "FULL_TIME", salary: "₹8,50,000 - ₹14,00,000 / yr", desc: "Responsible for developing responsive web portals using Jakarta Servlets, JSP/JSTL, JavaScript, and relational MySQL database engines." },
+            { id: 103, title: "Cloud DevOps Architect", company: "Amazon AWS Services", loc: "Remote (India)", type: "FULL_TIME", salary: "₹24,00,000 - ₹32,00,000 / yr", desc: "Maintain CI/CD pipelines, containerize backend Java microservices, and oversee cloud infrastructure security and deployment." },
+            { id: 104, title: "Software Engineer Intern", company: "Infosys Enterprise", loc: "Pune (Remote)", type: "INTERNSHIP", salary: "₹25,000 / month", desc: "Exciting internship opportunity for pre-final and final year B.Tech / MCA students. Work directly on live Java enterprise web applications." },
+            { id: 105, title: "QA Automation Lead", company: "Wipro Technologies", loc: "Hyderabad (Hybrid)", type: "FULL_TIME", salary: "₹12,00,000 - ₹18,00,000 / yr", desc: "Develop automated testing suites using JUnit 5, Mockito, and Selenium for high-throughput enterprise systems." },
+            { id: 106, title: "Associate Data Analyst", company: "TechCorp Solutions", loc: "Jaipur (Onsite)", type: "FULL_TIME", salary: "₹6,00,000 - ₹9,50,000 / yr", desc: "Analyze recruitment and placement funnel metrics, write SQL queries, and generate analytical moderation reports." }
+        ];
+
+        // Sample candidate applications
+        let applications = [
+            { id: "APP-501", title: "Lead Java Architect", company: "Oracle India", date: "18-Oct-2026", status: "UNDER_REVIEW" },
+            { id: "APP-502", title: "Full Stack Web Developer", company: "TCS Digital", date: "17-Oct-2026", status: "SHORTLISTED" },
+            { id: "APP-503", title: "Software Engineer Intern", company: "Infosys", date: "15-Oct-2026", status: "INTERVIEW" },
+            { id: "APP-504", title: "Associate Data Analyst", company: "TechCorp", date: "10-Oct-2026", status: "SUBMITTED" }
+        ];
+
+        let selectedJob = null;
+
+        function renderJobs(filteredList) {
+            const container = document.getElementById("jobsContainer");
+            container.innerHTML = "";
+            document.getElementById("totalJobsVal").innerText = filteredList.length;
+
+            if (filteredList.length === 0) {
+                container.innerHTML = "<p style='color: #64748b; grid-column: 1/-1;'>No jobs match your filter criteria.</p>";
+                return;
+            }
+
+            filteredList.forEach(job => {
+                const card = document.createElement("div");
+                card.className = "job-card";
+                const isIntern = job.type === "INTERNSHIP";
+                card.innerHTML = `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="badge-type ${isIntern ? 'badge-intern' : 'badge-fulltime'}">${isIntern ? 'INTERNSHIP' : 'FULL TIME'}</span>
+                            <span style="font-size: 0.8rem; color: #64748b;">ID #${job.id}</span>
+                        </div>
+                        <h3 class="job-title">${job.title}</h3>
+                        <div class="job-company">${job.company}</div>
+                        <div class="job-meta">📍 ${job.loc}</div>
+                        <p class="job-desc">${job.desc}</p>
+                    </div>
+                    <div class="job-footer">
+                        <span class="job-salary">${job.salary}</span>
+                        <button class="btn-apply" onclick="openApplyModal(${job.id})">Apply Now</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterJobs() {
+            const kw = document.getElementById("searchKeyword").value.toLowerCase();
+            const type = document.getElementById("typeFilter").value;
+
+            const filtered = jobs.filter(j => {
+                const matchesKw = !kw || j.title.toLowerCase().includes(kw) || j.company.toLowerCase().includes(kw) || j.desc.toLowerCase().includes(kw);
+                const matchesType = !type || j.type === type;
+                return matchesKw && matchesType;
+            });
+            renderJobs(filtered);
+        }
+
+        function renderApplications() {
+            const tbody = document.getElementById("appsTableBody");
+            tbody.innerHTML = "";
+            applications.forEach(app => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${app.id}</strong></td>
+                    <td><strong>${app.title}</strong></td>
+                    <td>${app.company}</td>
+                    <td>${app.date}</td>
+                    <td><span class="status-badge status-${app.status}">${app.status}</span></td>
+                    <td><button class="btn-apply" style="padding: 4px 10px; font-size: 0.8rem;" onclick="alert('Viewing status history for ${app.id}')">View Details</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+            document.getElementById(tabId).classList.add("active");
+
+            // Hero visibility
+            document.getElementById("heroSection").style.display = (tabId === "jobsTab") ? "block" : "none";
+
+            // Active button
+            if (tabId === "jobsTab") document.getElementById("btnJobs").classList.add("active");
+            if (tabId === "appsTab") document.getElementById("btnApps").classList.add("active");
+            if (tabId === "profileTab") document.getElementById("btnProfile").classList.add("active");
+            if (tabId === "adminTab") document.getElementById("btnAdmin").classList.add("active");
+            if (tabId === "demosTab") document.getElementById("btnDemos").classList.add("active");
+        }
+
+        function switchRole(role) {
+            if (role === "candidate") showTab("jobsTab");
+            else if (role === "employer") showTab("appsTab");
+            else if (role === "admin") showTab("adminTab");
+            else if (role === "demos") showTab("demosTab");
+        }
+
+        function openApplyModal(jobId) {
+            selectedJob = jobs.find(j => j.id === jobId);
+            document.getElementById("modalJobTitle").innerText = "Apply for: " + selectedJob.title;
+            document.getElementById("applyModal").classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("applyModal").classList.remove("active");
+        }
+
+        function submitApplication() {
+            if (selectedJob) {
+                const newId = "APP-" + (500 + applications.length + 1);
+                applications.unshift({
+                    id: newId,
+                    title: selectedJob.title,
+                    company: selectedJob.company,
+                    date: "Today",
+                    status: "SUBMITTED"
+                });
+                renderApplications();
+                closeModal();
+                alert("Application submitted successfully for " + selectedJob.title + "!");
+                showTab("appsTab");
+            }
+        }
+
+        // Initialize on load
+        renderJobs(jobs);
+        renderApplications();
+    </script>
+</body>
+</html>
